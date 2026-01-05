@@ -12,4 +12,17 @@ class AppUsageService {
       return [];
     }
   }
+
+  Future<List<Map<String, dynamic>>> getAppUsageForRange(DateTime start, DateTime end) async {
+    try {
+      final List<dynamic> result = await platform.invokeMethod('getBatteryUsage', {
+        'startTime': start.millisecondsSinceEpoch,
+        'endTime': end.millisecondsSinceEpoch,
+      });
+      return result.map((e) => Map<String, dynamic>.from(e)).toList();
+    } on PlatformException catch (e) {
+      print("Failed to get usage stats: '${e.message}'.");
+      return [];
+    }
+  }
 }

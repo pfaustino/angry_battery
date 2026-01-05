@@ -1,0 +1,13 @@
+subprojects {
+    afterEvaluate { project ->
+        if (project.name == 'screen_state') {
+            if (project.hasProperty('android')) {
+                project.android {
+                    if (namespace == null) {
+                        namespace 'io.flutter.plugins.screen.screen_state'
+                    }
+                }
+            }
+        }
+    }
+}

@@ -8,9 +8,94 @@ import '../widgets/usage_chart.dart';
 import 'settings_screen.dart';
 import 'app_usage_screen.dart';
 import 'package:android_intent_plus/android_intent.dart';
+import '../services/vampire_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final VampireService _vampireService = VampireService();
+
+  @override
+  void initState() {
+    super.initState();
+    _vampireService.start();
+    _vampireService.onVampireDetected = _showVampireDialog;
+  }
+
+  @override
+  void dispose() {
+    _vampireService.dispose();
+    super.dispose();
+  }
+
+  void _showVampireDialog(VampireAlert alert) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: Row(
+          children: [
+            const Icon(Icons.nightlight_round, color: AppTheme.warning),
+            const SizedBox(width: 8),
+            const Text('Vampire Detected! 🧛'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'You lost ${alert.drainAmount}% battery while the screen was off (${alert.duration.inMinutes} mins).',
+              style: const TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Suspects (Apps running):',
+              style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accent),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              constraints: const BoxConstraints(maxHeight: 200),
+              child: alert.suspects.isEmpty 
+                  ? const Text('Unknown causes.', style: TextStyle(color: Colors.white38))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: alert.suspects.length,
+                      itemBuilder: (context, index) {
+                        final app = alert.suspects[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          dense: true,
+                          leading: const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 20),
+                          title: Text(app['appName'] ?? 'Unknown', style: const TextStyle(color: Colors.white)),
+                          subtitle: Text('${app['usage']}m active', style: const TextStyle(color: Colors.white38)),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Dismiss'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const AppUsageScreen()));
+            },
+            child: const Text('Investigate'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

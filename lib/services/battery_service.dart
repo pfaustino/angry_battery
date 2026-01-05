@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'notification_service.dart';
 
 class BatteryService extends ChangeNotifier {
   final Battery _battery = Battery();
+  final NotificationService _notifications = NotificationService();
   
   int _batteryLevel = 0;
   BatteryState _batteryState = BatteryState.unknown;
@@ -59,6 +61,8 @@ class BatteryService extends ChangeNotifier {
     // Listen to battery state changes
     _batteryStateSubscription = _battery.onBatteryStateChanged.listen((state) {
       _batteryState = state;
+      // Also check notifications on state change
+      _notifications.checkBatteryState(_batteryLevel, isCharging);
       notifyListeners();
     });
     
@@ -79,6 +83,8 @@ class BatteryService extends ChangeNotifier {
   Future<void> _updateBatteryLevel() async {
     try {
       _batteryLevel = await _battery.batteryLevel;
+      // Triggers shaming if conditions are met
+      _notifications.checkBatteryState(_batteryLevel, isCharging);
       notifyListeners();
     } catch (e) {
       debugPrint('Error getting battery level: $e');

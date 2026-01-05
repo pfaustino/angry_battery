@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
 
+import '../services/vampire_service.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -15,6 +17,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _fullChargeAlert = false;
   bool _temperatureAlert = true;
   double _lowBatteryThreshold = 20.0;
+  int _vampireThreshold = 30;
+
+  @override
+  void initState() {
+    super.initState();
+    _vampireThreshold = VampireService().threshold;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +110,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ],
 
+            const SizedBox(height: 32),
+            _buildSectionHeader('Vampire Hunter 🧛'),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.border),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Idle Drain Threshold',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Text(
+                            'Alert if idle for $_vampireThreshold minutes',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textMuted),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '${_vampireThreshold}m',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppTheme.accent),
+                      ),
+                    ],
+                  ),
+                  Slider(
+                    value: _vampireThreshold.toDouble(),
+                    min: 1,
+                    max: 60,
+                    divisions: 59,
+                    activeColor: AppTheme.accent,
+                    onChanged: (val) {
+                      setState(() => _vampireThreshold = val.toInt());
+                      VampireService().setThreshold(val.toInt());
+                    },
+                  ),
+                  if (_vampireThreshold == 30)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        children: [
+                          Icon(Icons.thumb_up, size: 14, color: Colors.greenAccent),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Recommended for accurate detection',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.greenAccent),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            
             const SizedBox(height: 32),
             _buildSectionHeader('Appearance'),
             Container(

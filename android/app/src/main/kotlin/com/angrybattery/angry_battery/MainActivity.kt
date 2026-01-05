@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.EventChannel
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
 import java.util.Calendar
 
 class MainActivity : FlutterActivity() {
@@ -27,13 +30,49 @@ class MainActivity : FlutterActivity() {
                     result.error("Permission Denied", "Usage stats permission is not granted.", null)
                 } else {
                     val duration = call.argument<String>("duration")
-                    val batteryUsage = getBatteryUsage(duration)
+                    val startTime = call.argument<Long>("startTime")
+                    val endTime = call.argument<Long>("endTime")
+                    
+                    val batteryUsage = getBatteryUsage(duration, startTime, endTime)
                     result.success(batteryUsage)
                 }
             } else {
                 result.notImplemented()
             }
         }
+        
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, "com.angrybattery.app/screen_state").setStreamHandler(
+            object : EventChannel.StreamHandler {
+                private var receiver: BroadcastReceiver? = null
+
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    receiver = object : BroadcastReceiver() {
+                        override fun onReceive(context: Context, intent: Intent) {
+                            if (intent.action == Intent.ACTION_SCREEN_OFF) {
+                                events?.success("SCREEN_OFF")
+                            } else if (intent.action == Intent.ACTION_SCREEN_ON) {
+                                events?.success("SCREEN_ON")
+                            }
+                        }
+                    }
+                    val filter = IntentFilter()
+                    filter.addAction(Intent.ACTION_SCREEN_OFF)
+                    filter.addAction(Intent.ACTION_SCREEN_ON)
+                    registerReceiver(receiver, filter)
+                }
+
+                override fun onCancel(arguments: Any?) {
+                    if (receiver != null) {
+                        try {
+                           unregisterReceiver(receiver)
+                        } catch (e: Exception) {
+                           // Already unregistered
+                        }
+                        receiver = null
+                    }
+                }
+            }
+        )
     }
 
     override fun onFlutterUiDisplayed() {
@@ -62,17 +101,26 @@ class MainActivity : FlutterActivity() {
         startActivity(intent)
     }
 
-    private fun getBatteryUsage(duration: String?): List<Map<String, Any>> {
+    private fun getBatteryUsage(duration: String?, customStart: Long?, customEnd: Long?): List<Map<String, Any>> {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as android.app.usage.UsageStatsManager
-        val cal = Calendar.getInstance()
-        val endTime = cal.timeInMillis
-        when (duration) {
-            "hour" -> cal.add(Calendar.HOUR, -1)
-            "day" -> cal.add(Calendar.DAY_OF_YEAR, -1)
-            "week" -> cal.add(Calendar.WEEK_OF_YEAR, -1)
-            else -> cal.add(Calendar.DAY_OF_YEAR, -1) // Default to day
+        
+        val endTime: Long
+        val startTime: Long
+
+        if (customStart != null && customEnd != null) {
+            startTime = customStart
+            endTime = customEnd
+        } else {
+            val cal = Calendar.getInstance()
+            endTime = cal.timeInMillis
+            when (duration) {
+                "hour" -> cal.add(Calendar.HOUR, -1)
+                "day" -> cal.add(Calendar.DAY_OF_YEAR, -1)
+                "week" -> cal.add(Calendar.WEEK_OF_YEAR, -1)
+                else -> cal.add(Calendar.DAY_OF_YEAR, -1)
+            }
+            startTime = cal.timeInMillis
         }
-        val startTime = cal.timeInMillis
 
         val queryUsageStats = usageStatsManager.queryUsageStats(android.app.usage.UsageStatsManager.INTERVAL_DAILY, startTime, endTime)
 

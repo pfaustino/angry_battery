@@ -1,0 +1,355 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/battery_service.dart';
+import '../theme/app_theme.dart';
+import '../widgets/battery_indicator.dart';
+import '../widgets/stat_card.dart';
+import '../widgets/usage_chart.dart';
+import 'settings_screen.dart';
+import 'app_usage_screen.dart';
+import 'package:android_intent_plus/android_intent.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<BatteryService>(
+      builder: (context, battery, child) {
+        return Scaffold(
+          backgroundColor: AppTheme.background,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Angry Battery',
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            battery.stateText,
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: battery.isCharging 
+                                  ? AppTheme.warning 
+                                  : AppTheme.textMuted,
+                            ),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                          );
+                        },
+                        icon: const Icon(Icons.settings_outlined),
+                        style: IconButton.styleFrom(
+                          backgroundColor: AppTheme.surface,
+                          padding: const EdgeInsets.all(12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Battery Indicator
+                  Center(
+                    child: BatteryIndicator(
+                      level: battery.batteryLevel,
+                      isCharging: battery.isCharging,
+                      size: 220,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Estimated time
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.surface,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: AppTheme.border),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            battery.isCharging 
+                                ? Icons.battery_charging_full 
+                                : Icons.access_time,
+                            color: AppTheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            battery.estimatedTime,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Quick Stats
+                  Text(
+                    'Quick Stats',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  Row(
+                    children: [
+                      Expanded(
+                        child: StatCard(
+                          title: 'Health',
+                          value: 'Good',
+                          icon: Icons.favorite,
+                          iconColor: AppTheme.primary,
+                          subtitle: 'Battery optimal',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: StatCard(
+                          title: 'Temperature',
+                          value: '28°C',
+                          icon: Icons.thermostat,
+                          iconColor: AppTheme.warning,
+                          subtitle: 'Normal',
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  Row(
+                    children: [
+                      Expanded(
+                        child: StatCard(
+                          title: 'Screen On',
+                          value: '2h 34m',
+                          icon: Icons.phone_android,
+                          iconColor: Colors.blueAccent,
+                          subtitle: 'Today',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: StatCard(
+                          title: 'Charge Cycles',
+                          value: '142',
+                          icon: Icons.loop,
+                          iconColor: Colors.purpleAccent,
+                          subtitle: 'Total',
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // App Usage Button
+                  _buildActionCard(
+                    context,
+                    title: 'Analyze App Usage',
+                    subtitle: 'Identify power-hungry apps',
+                    icon: Icons.analytics_outlined,
+                    color: AppTheme.accent,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AppUsageScreen()),
+                      );
+                    },
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Usage Chart
+                  UsageChart(
+                    history: battery.history,
+                    height: 220,
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Power Saving Tips
+                  Text(
+                    'Power Saving Tips',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  _buildTipCard(
+                    context,
+                    icon: Icons.brightness_medium,
+                    title: 'Reduce Brightness',
+                    description: 'Lower screen brightness to save up to 20% battery',
+                    color: AppTheme.warning,
+                    onTap: () => const AndroidIntent(action: 'android.settings.DISPLAY_SETTINGS').launch(),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildTipCard(
+                    context,
+                    icon: Icons.wifi_off,
+                    title: 'Turn Off Wi-Fi',
+                    description: 'Disable Wi-Fi when not in use',
+                    color: Colors.blueAccent,
+                    onTap: () => const AndroidIntent(action: 'android.settings.WIFI_SETTINGS').launch(),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildTipCard(
+                    context,
+                    icon: Icons.location_off,
+                    title: 'Disable Location',
+                    description: 'GPS uses significant battery power',
+                    color: AppTheme.accent,
+                    onTap: () => const AndroidIntent(action: 'android.settings.LOCATION_SOURCE_SETTINGS').launch(),
+                  ),
+                  
+                  const SizedBox(height: 40),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
+  Widget _buildTipCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color color,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: AppTheme.textMuted,
+            ),
+          ],
+        ),
+      ),
+    );
+    }
+
+  Widget _buildActionCard(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.textMuted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: AppTheme.textMuted,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

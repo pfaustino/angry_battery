@@ -1,0 +1,11 @@
+Analyzing angry_battery...                                      
+
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:236:28 - deprecated_member_use
+warning - This default clause is covered by the previous cases - lib\services\battery_service.dart:36:7 - unreachable_switch_default
+  error - The argument type 'CardTheme' can't be assigned to the parameter type 'CardThemeData?'.  - lib\theme\app_theme.dart:77:18 - argument_type_not_assignable
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\stat_card.dart:37:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\usage_chart.dart:122:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\usage_chart.dart:123:44 - deprecated_member_use
+warning - Unused import: 'package:angry_battery/services/battery_service.dart' - test\widget_test.dart:4:8 - unused_import
+warning - Unused import: 'package:provider/provider.dart' - test\widget_test.dart:5:8 - unused_import
+

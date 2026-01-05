@@ -5,6 +5,7 @@ import 'services/battery_service.dart';
 import 'screens/home_screen.dart';
 
 
+import 'services/vampire_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {
@@ -18,8 +19,11 @@ class AngryBatteryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => BatteryService()..initialize(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BatteryService()..initialize()),
+        ChangeNotifierProvider(create: (_) => VampireService()..start()),
+      ],
       child: MaterialApp(
         title: 'Angry Battery',
         debugShowCheckedModeBanner: false,

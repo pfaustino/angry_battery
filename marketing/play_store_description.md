@@ -4,7 +4,7 @@
 Angry Battery - Battery Saver
 
 ## Short Description (80 characters max)
-Monitor battery health, identify power-hungry apps, and save power with attitude!
+Stop idle drain with Vampire Hunter! Monitor health & save power with attitude.
 
 ## Full Description
 Is your battery dying too fast? Get **Angry Battery**! ⚡😠
@@ -12,6 +12,9 @@ Is your battery dying too fast? Get **Angry Battery**! ⚡😠
 Angry Battery isn't just another boring monitoring tool. It's a powerful utility with a unique personality that helps you take control of your device's power consumption.
 
 **Key Features:**
+
+🧛 **Vampire Hunter: Stop Idle Drain**
+Your phone shouldn't lose power while it's sleeping. Angry Battery detects abnormal drain when your screen is off and immediately shows you the "Suspects"—the apps running in the background while you weren't looking.
 
 🔋 **Live Battery Monitoring**
 Visualise your battery status with our custom "Angry" indicator. Watch it pulse when charging and change states as your battery drains.
@@ -39,6 +42,7 @@ One-tap shortcuts to meaningful system settings:
 *   Optimise Location Services
 
 **Customisation:**
+*   **Vampire Thresholds:** Adjustable sensitivity settings (1-60 mins).
 *   Sleek Dark Mode Design
 *   Customisable Low Battery Alerts
 *   Full Charge Notifications

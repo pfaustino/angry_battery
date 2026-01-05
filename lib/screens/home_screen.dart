@@ -9,6 +9,7 @@ import 'settings_screen.dart';
 import 'app_usage_screen.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import '../services/vampire_service.dart';
+import '../widgets/vampire_hunter_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,18 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final VampireService _vampireService = VampireService();
-
-  @override
-  void initState() {
-    super.initState();
-    _vampireService.start();
-    _vampireService.onVampireDetected = _showVampireDialog;
-  }
-
   @override
   void dispose() {
-    _vampireService.dispose();
     super.dispose();
   }
 
@@ -162,6 +153,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   
                   const SizedBox(height: 24),
+
+                  // Vampire Hunter Status
+                  const VampireHunterCard(),
+
+                  const SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   
                   // Estimated time
                   Center(
@@ -209,20 +206,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: StatCard(
                           title: 'Health',
-                          value: 'Good',
+                          value: battery.health,
                           icon: Icons.favorite,
-                          iconColor: AppTheme.primary,
-                          subtitle: 'Battery optimal',
+                          iconColor: battery.health == 'Good' ? AppTheme.primary : AppTheme.accent,
+                          subtitle: battery.health == 'Good' ? 'Optimal state' : 'Attention needed',
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: StatCard(
                           title: 'Temperature',
-                          value: '28°C',
+                          value: battery.useCelsius 
+                              ? '${battery.temperature.toStringAsFixed(1)}°C' 
+                              : '${(battery.temperature * 9 / 5 + 32).toStringAsFixed(1)}°F',
                           icon: Icons.thermostat,
-                          iconColor: AppTheme.warning,
-                          subtitle: 'Normal',
+                          iconColor: battery.temperature > 40 ? AppTheme.accent : AppTheme.warning,
+                          subtitle: battery.temperature > 40 ? 'Overheat' : 'Normal',
                         ),
                       ),
                     ],
@@ -235,7 +234,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: StatCard(
                           title: 'Screen On',
-                          value: '2h 34m',
+                          // Format duration: 2h 34m
+                          value: '${battery.screenOnTime.inHours}h ${battery.screenOnTime.inMinutes.remainder(60)}m',
                           icon: Icons.phone_android,
                           iconColor: Colors.blueAccent,
                           subtitle: 'Today',
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: StatCard(
                           title: 'Charge Cycles',
-                          value: '142',
+                          value: battery.cycles == -1 ? 'N/A' : '${battery.cycles}',
                           icon: Icons.loop,
                           iconColor: Colors.purpleAccent,
                           subtitle: 'Total',

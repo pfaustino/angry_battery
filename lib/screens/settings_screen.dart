@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-
-
+import 'package:provider/provider.dart';
+import '../services/battery_service.dart';
 import '../services/vampire_service.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -113,6 +113,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ],
+
+            const SizedBox(height: 32),
+            _buildSectionHeader('Units'),
+            Consumer<BatteryService>(
+              builder: (context, battery, child) {
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppTheme.border),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.thermostat, color: AppTheme.primary, size: 24),
+                          const SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Temperature Unit',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              Text(
+                                battery.useCelsius ? 'Celsius (°C)' : 'Fahrenheit (°F)',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: AppTheme.textMuted,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Switch(
+                        value: battery.useCelsius,
+                        onChanged: (val) => battery.toggleTemperatureUnit(val),
+                        thumbColor: WidgetStateProperty.all(AppTheme.primary),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
 
             const SizedBox(height: 32),
             Row(

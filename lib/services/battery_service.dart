@@ -1,13 +1,20 @@
 import 'dart:async';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'notification_service.dart';
 
 class BatteryService extends ChangeNotifier {
   final Battery _battery = Battery();
   final NotificationService _notifications = NotificationService();
+  static const _channel = MethodChannel('com.angrybattery.app/battery');
   
   int _batteryLevel = 0;
+  double _temperature = 0.0;
+  String _health = 'Unknown';
+  int _cycles = -1;
+  Duration _screenOnTime = Duration.zero;
+  bool _useCelsius = true;
   BatteryState _batteryState = BatteryState.unknown;
   StreamSubscription<BatteryState>? _batteryStateSubscription;
   Timer? _levelTimer;
@@ -16,6 +23,11 @@ class BatteryService extends ChangeNotifier {
   final List<BatteryRecord> _history = [];
   
   int get batteryLevel => _batteryLevel;
+  double get temperature => _temperature;
+  String get health => _health;
+  int get cycles => _cycles;
+  Duration get screenOnTime => _screenOnTime;
+  bool get useCelsius => _useCelsius;
   BatteryState get batteryState => _batteryState;
   List<BatteryRecord> get history => List.unmodifiable(_history);
   
@@ -83,12 +95,33 @@ class BatteryService extends ChangeNotifier {
   Future<void> _updateBatteryLevel() async {
     try {
       _batteryLevel = await _battery.batteryLevel;
+      try {
+        final double temp = await _channel.invokeMethod('getBatteryTemperature');
+        _temperature = temp;
+        
+        final String health = await _channel.invokeMethod('getBatteryHealth');
+        _health = health;
+        
+        final int cycles = await _channel.invokeMethod('getChargeCycles');
+        _cycles = cycles;
+        
+        final int sotMillis = await _channel.invokeMethod('getScreenOnTime');
+        _screenOnTime = Duration(milliseconds: sotMillis);
+      } on PlatformException catch (e) {
+        debugPrint("Failed to get battery stats: '${e.message}'.");
+      }
+      
       // Triggers shaming if conditions are met
       _notifications.checkBatteryState(_batteryLevel, isCharging);
       notifyListeners();
     } catch (e) {
       debugPrint('Error getting battery level: $e');
     }
+  }
+
+  void toggleTemperatureUnit(bool useCelsius) {
+    _useCelsius = useCelsius;
+    notifyListeners();
   }
   
   void _recordHistory() {

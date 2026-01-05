@@ -16,6 +16,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.EventChannel
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
+import android.app.usage.UsageEvents
+import android.os.BatteryManager
 import java.util.Calendar
 
 class MainActivity : FlutterActivity() {
@@ -35,6 +37,22 @@ class MainActivity : FlutterActivity() {
                     
                     val batteryUsage = getBatteryUsage(duration, startTime, endTime)
                     result.success(batteryUsage)
+                }
+            } else if (call.method == "getBatteryTemperature") {
+                val temperature = getBatteryTemperature()
+                result.success(temperature)
+            } else if (call.method == "getBatteryHealth") {
+                val health = getBatteryHealth()
+                result.success(health)
+            } else if (call.method == "getChargeCycles") {
+                val cycles = getChargeCycles()
+                result.success(cycles)
+            } else if (call.method == "getScreenOnTime") {
+                if (!hasUsageStatsPermission()) {
+                    result.success(0L) // Or error, but 0 is safe for now
+                } else {
+                    val sot = getScreenOnTime()
+                    result.success(sot)
                 }
             } else {
                 result.notImplemented()
@@ -144,5 +162,66 @@ class MainActivity : FlutterActivity() {
         batteryUsageList.sortByDescending { it["usage"] as Int }
 
         return batteryUsageList.take(10)
+    }
+    private fun getBatteryTemperature(): Double {
+        val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val temp = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
+        return temp / 10.0
+    }
+
+    private fun getBatteryHealth(): String {
+        val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val health = intent?.getIntExtra(BatteryManager.EXTRA_HEALTH, BatteryManager.BATTERY_HEALTH_UNKNOWN) ?: BatteryManager.BATTERY_HEALTH_UNKNOWN
+        return when (health) {
+            BatteryManager.BATTERY_HEALTH_GOOD -> "Good"
+            BatteryManager.BATTERY_HEALTH_OVERHEAT -> "Overheat"
+            BatteryManager.BATTERY_HEALTH_DEAD -> "Dead"
+            BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE -> "Over Voltage"
+            BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE -> "Failed"
+            BatteryManager.BATTERY_HEALTH_COLD -> "Cold"
+            else -> "Unknown"
+        }
+    }
+
+    private fun getChargeCycles(): Int {
+        val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        // EXTRA_CYCLE_COUNT is API 34. For older versions, this will default to -1.
+        // We use the string literal to avoid compilation issues if compiling against older SDK (though we are on 34+)
+        return intent?.getIntExtra("android.os.extra.CYCLE_COUNT", -1) ?: -1
+    }
+
+    private fun getScreenOnTime(): Long {
+        val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as android.app.usage.UsageStatsManager
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        val start = cal.timeInMillis
+        val end = System.currentTimeMillis()
+
+        val events = usageStatsManager.queryEvents(start, end)
+        var totalTime = 0L
+        var lastOnTime: Long? = null
+        val event = UsageEvents.Event()
+
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event)
+            if (event.eventType == UsageEvents.Event.SCREEN_INTERACTIVE) {
+                lastOnTime = event.timeStamp
+            } else if (event.eventType == UsageEvents.Event.SCREEN_NON_INTERACTIVE) {
+                if (lastOnTime != null) {
+                    totalTime += event.timeStamp - lastOnTime
+                    lastOnTime = null
+                }
+            }
+        }
+
+        // If currently on
+        if (lastOnTime != null) {
+            totalTime += end - lastOnTime
+        }
+
+        return totalTime
     }
 }

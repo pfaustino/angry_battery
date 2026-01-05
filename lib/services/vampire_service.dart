@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_usage_service.dart';
 
-class VampireService {
+import 'dart:convert';
+
+class VampireService extends ChangeNotifier {
   static final VampireService _instance = VampireService._internal();
   factory VampireService() => _instance;
   VampireService._internal();
@@ -23,7 +25,10 @@ class VampireService {
   DateTime? _screenOffTime;
   int? _screenOffLevel;
   
-  // Alert Callback
+  VampireAlert? _lastAlert;
+  VampireAlert? get lastAlert => _lastAlert;
+
+  // Alert Callback (Keeping for backward compat/dialogs, but UI should listen to notifyListeners)
   Function(VampireAlert)? onVampireDetected;
 
   Future<void> start() async {
@@ -40,6 +45,16 @@ class VampireService {
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     _thresholdMinutes = prefs.getInt('vampire_threshold') ?? 30;
+    
+    final alertJson = prefs.getString('last_vampire_alert');
+    if (alertJson != null) {
+      try {
+        _lastAlert = VampireAlert.fromJson(jsonDecode(alertJson));
+      } catch (e) {
+        debugPrint("Error loading last alert: $e");
+      }
+    }
+    notifyListeners();
   }
   
   Future<void> setThreshold(int minutes) async {
@@ -72,12 +87,19 @@ class VampireService {
       // Capture the suspects immediately
       final suspects = await _usageService.getAppUsageForRange(_screenOffTime!, now);
       
+      final alert = VampireAlert(
+        drainAmount: drain,
+        duration: duration,
+        suspects: suspects,
+        timestamp: now,
+      );
+      
+      _lastAlert = alert;
+      _saveAlert(alert);
+      notifyListeners();
+
       if (onVampireDetected != null) {
-        onVampireDetected!(VampireAlert(
-          drainAmount: drain,
-          duration: duration,
-          suspects: suspects,
-        ));
+        onVampireDetected!(alert);
       }
     }
     
@@ -86,8 +108,14 @@ class VampireService {
     _screenOffLevel = null;
   }
   
+  Future<void> _saveAlert(VampireAlert alert) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('last_vampire_alert', jsonEncode(alert.toJson()));
+  }
+
   void dispose() {
     _screenSubscription?.cancel();
+    super.dispose();
   }
 }
 
@@ -95,6 +123,26 @@ class VampireAlert {
   final int drainAmount;
   final Duration duration;
   final List<Map<String, dynamic>> suspects;
+  final DateTime timestamp;
 
-  VampireAlert({required this.drainAmount, required this.duration, required this.suspects});
+  VampireAlert({
+    required this.drainAmount,
+    required this.duration,
+    required this.suspects,
+    required this.timestamp,
+  });
+  
+  Map<String, dynamic> toJson() => {
+    'drainAmount': drainAmount,
+    'durationMinutes': duration.inMinutes,
+    'suspects': suspects,
+    'timestamp': timestamp.millisecondsSinceEpoch,
+  };
+  
+  factory VampireAlert.fromJson(Map<String, dynamic> json) => VampireAlert(
+    drainAmount: json['drainAmount'],
+    duration: Duration(minutes: json['durationMinutes']),
+    suspects: List<Map<String, dynamic>>.from(json['suspects']),
+    timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp']),
+  );
 }

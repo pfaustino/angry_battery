@@ -49,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               'Allow the app to send you alerts',
               _notificationsEnabled,
               (val) => setState(() => _notificationsEnabled = val),
+              helpText: "Master switch for all app alerts.",
             ),
             
             if (_notificationsEnabled) ...[
@@ -66,6 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       'Low Battery Alert',
                       _lowBatteryAlert,
                       (val) => setState(() => _lowBatteryAlert = val),
+                      helpText: "Get yelled at when your battery drops below the set limit.",
                     ),
                     if (_lowBatteryAlert) ...[
                       const Divider(color: AppTheme.border, height: 24),
@@ -98,12 +100,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       'Full Charge Alert',
                       _fullChargeAlert,
                       (val) => setState(() => _fullChargeAlert = val),
+                      helpText: "Know when to unplug. Don't overfeed the battery.",
                     ),
                     const Divider(color: AppTheme.border, height: 24),
                     _buildToggleItem(
                       'High Temp Alert',
                       _temperatureAlert,
                       (val) => setState(() => _temperatureAlert = val),
+                      helpText: "Warning when your device gets too hot (>40°C).",
                     ),
                   ],
                 ),
@@ -111,7 +115,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
 
             const SizedBox(height: 32),
-            _buildSectionHeader('Vampire Hunter 🧛'),
+            Row(
+              children: [
+                Expanded(child: _buildSectionHeader('Vampire Hunter 🧛')),
+                IconButton(
+                  icon: const Icon(Icons.help_outline, size: 20, color: AppTheme.textMuted),
+                  onPressed: () => _showHelp(
+                    'Vampire Hunter',
+                    "Detects abnormal battery drain when the screen is off.\n\n"
+                    "If your phone loses >2% battery while idle, we'll find the apps responsible.",
+                  ),
+                ),
+              ],
+            ),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -254,7 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSwitchTile(String title, String subtitle, bool value, Function(bool) onChanged) {
+  Widget _buildSwitchTile(String title, String subtitle, bool value, Function(bool) onChanged, {String? helpText}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -269,9 +285,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    if (helpText != null) ...[
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => _showHelp(title, helpText),
+                        child: const Icon(Icons.help_outline, size: 16, color: AppTheme.textMuted),
+                      ),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -291,13 +318,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildToggleItem(String title, bool value, Function(bool) onChanged) {
+  Widget _buildToggleItem(String title, bool value, Function(bool) onChanged, {String? helpText}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge,
+        Row(
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            if (helpText != null) ...[
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: () => _showHelp(title, helpText),
+                child: const Icon(Icons.help_outline, size: 16, color: AppTheme.textMuted),
+              ),
+            ],
+          ],
         ),
         Switch(
           value: value,
@@ -305,6 +343,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           thumbColor: WidgetStateProperty.all(AppTheme.warning),
         ),
       ],
+    );
+  }
+  
+  void _showHelp(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: Text(title, style: const TextStyle(color: AppTheme.primary)),
+        content: Text(message, style: const TextStyle(color: AppTheme.text)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -86,7 +86,11 @@ class MainActivity : FlutterActivity() {
             val usageMinutes = (usageStats.totalTimeInForeground / (1000 * 60)).toInt()
 
             if (usageMinutes > 0) {
-                batteryUsageList.add(mapOf("appName" to appName, "usage" to usageMinutes))
+                batteryUsageList.add(mapOf(
+                    "appName" to appName,
+                    "usage" to usageMinutes,
+                    "packageName" to usageStats.packageName
+                ))
             }
         }
         batteryUsageList.sortByDescending { it["usage"] as Int }

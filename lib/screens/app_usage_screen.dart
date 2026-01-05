@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/app_usage_service.dart';
 import '../theme/app_theme.dart';
+import 'package:android_intent_plus/android_intent.dart';
 
 class AppUsageScreen extends StatefulWidget {
   const AppUsageScreen({super.key});
@@ -96,13 +97,31 @@ class _AppUsageScreenState extends State<AppUsageScreen> {
                           '${usageMinutes}m active time',
                           style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
                         ),
-                        trailing: Text(
-                          '${(usageMinutes / 60).toStringAsFixed(1)}h',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.accent,
-                            fontSize: 16,
-                          ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${(usageMinutes / 60).toStringAsFixed(1)}h',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.accent,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            IconButton(
+                              icon: const Icon(Icons.power_settings_new, color: AppTheme.warning),
+                              tooltip: 'Shut Down (Force Stop)',
+                              onPressed: () {
+                                if (app['packageName'] != null) {
+                                  AndroidIntent(
+                                    action: 'android.settings.APPLICATION_DETAILS_SETTINGS',
+                                    data: 'package:${app['packageName']}',
+                                  ).launch();
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     );

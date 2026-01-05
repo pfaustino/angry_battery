@@ -4,6 +4,7 @@ import 'theme/app_theme.dart';
 import 'services/battery_service.dart';
 import 'screens/home_screen.dart';
 
+
 void main() {
   runApp(const AngryBatteryApp());
 }

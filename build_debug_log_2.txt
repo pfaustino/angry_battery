@@ -1,0 +1,22 @@
+Running Gradle task 'assembleDebug'...                          
+lib/screens/app_usage_screen.dart:13:58: Error: Can't find '}' to match '{'.
+class _AppUsageScreenState extends State<AppUsageScreen> {
+                                                         ^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\Users\pfaus\.gemini\antigravity\scratch\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+Running Gradle task 'assembleDebug'...                              7.3s
+Gradle task assembleDebug failed with exit code 1

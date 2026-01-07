@@ -68,7 +68,12 @@ class BatteryService extends ChangeNotifier {
   
   Future<void> initialize() async {
     // Get initial battery level
-    await _updateBatteryLevel();
+    // Get initial battery level with timeout to prevent freeze
+    try {
+      await _updateBatteryLevel().timeout(const Duration(seconds: 2));
+    } catch (e) {
+      debugPrint("Initial battery update timed out: $e");
+    }
     
     // Listen to battery state changes
     _batteryStateSubscription = _battery.onBatteryStateChanged.listen((state) {
@@ -137,6 +142,14 @@ class BatteryService extends ChangeNotifier {
     }
     
     notifyListeners();
+  }
+  
+  Future<void> minimizeApp() async {
+    try {
+      await _channel.invokeMethod('minimizeApp');
+    } catch (e) {
+      debugPrint("Failed to minimize app: $e");
+    }
   }
   
   @override

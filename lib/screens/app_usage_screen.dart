@@ -66,9 +66,20 @@ class _AppUsageScreenState extends State<AppUsageScreen> {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         const SizedBox(height: 24),
-                        ElevatedButton(
+                        ElevatedButton.icon(
                           onPressed: _loadUsage,
-                          child: const Text('Retry / Grant Permission'),
+                          icon: const Icon(Icons.settings),
+                          label: const Text('Grant Permission'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.primary,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextButton.icon(
+                          onPressed: () => _showRestrictedSettingsHelp(context),
+                          icon: const Icon(Icons.help_outline, color: AppTheme.warning),
+                          label: const Text('Permission Greyed Out?', style: TextStyle(color: AppTheme.warning)),
                         ),
                       ],
                     ),
@@ -127,6 +138,92 @@ class _AppUsageScreenState extends State<AppUsageScreen> {
                     );
                   },
                 ),
+    );
+  }
+
+  void _showRestrictedSettingsHelp(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded, color: AppTheme.warning, size: 28),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Android Restricted Settings',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Since this app was installed manually (sideloaded), Android blocks sensitive permissions by default for security.',
+              style: TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'To Fix This:',
+              style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accent),
+            ),
+            const SizedBox(height: 12),
+            _buildStep(1, 'Go to Settings > Apps > Angry Battery (App Info).'),
+            _buildStep(2, 'Tap the 3 dots in the top-right corner.'),
+            _buildStep(3, 'Select "Allow restricted settings".'),
+            _buildStep(4, 'Come back here and tap "Grant Permission".'),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  AndroidIntent(
+                    action: 'android.settings.APPLICATION_DETAILS_SETTINGS',
+                    data: 'package:com.angrybattery.angry_battery', // Ensure this matches android/app/build.gradle
+                  ).launch();
+                },
+                child: const Text('Open App Info Now'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStep(int number, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: const BoxDecoration(
+              color: AppTheme.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Text(
+              '$number',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(child: Text(text)),
+        ],
+      ),
     );
   }
 }

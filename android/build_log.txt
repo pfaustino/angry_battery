@@ -1,0 +1,322 @@
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle:compileKotlin UP-TO-DATE
+> Task :gradle:compileJava NO-SOURCE
+> Task :gradle:compileGroovy NO-SOURCE
+> Task :gradle:pluginDescriptors UP-TO-DATE
+> Task :gradle:processResources UP-TO-DATE
+> Task :gradle:classes UP-TO-DATE
+> Task :gradle:jar UP-TO-DATE
+
+> Configure project :app
+w: file:///C:/Users/pfaus/.gemini/antigravity/scratch/angry_battery/android/app/build.gradle.kts:28:9: 'jvmTarget: String' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:extractReleaseVersionControlInfo UP-TO-DATE
+> Task :android_intent_plus:preBuild UP-TO-DATE
+> Task :android_intent_plus:preReleaseBuild UP-TO-DATE
+> Task :android_intent_plus:prepareReleaseArtProfile UP-TO-DATE
+> Task :app:compileFlutterBuildRelease
+> Task :app:packJniLibsflutterBuildRelease
+> Task :battery_plus:preBuild UP-TO-DATE
+> Task :battery_plus:preReleaseBuild UP-TO-DATE
+> Task :battery_plus:prepareReleaseArtProfile UP-TO-DATE
+> Task :flutter_local_notifications:preBuild UP-TO-DATE
+> Task :flutter_local_notifications:preReleaseBuild UP-TO-DATE
+> Task :flutter_local_notifications:prepareReleaseArtProfile UP-TO-DATE
+> Task :path_provider_android:preBuild UP-TO-DATE
+> Task :path_provider_android:preReleaseBuild UP-TO-DATE
+> Task :path_provider_android:prepareReleaseArtProfile UP-TO-DATE
+> Task :shared_preferences_android:preBuild UP-TO-DATE
+> Task :shared_preferences_android:preReleaseBuild UP-TO-DATE
+> Task :shared_preferences_android:prepareReleaseArtProfile UP-TO-DATE
+> Task :app:mergeReleaseArtProfile UP-TO-DATE
+> Task :app:expandReleaseL8ArtProfileWildcards UP-TO-DATE
+> Task :android_intent_plus:generateReleaseResValues UP-TO-DATE
+> Task :android_intent_plus:generateReleaseResources UP-TO-DATE
+> Task :android_intent_plus:packageReleaseResources UP-TO-DATE
+> Task :android_intent_plus:processReleaseNavigationResources UP-TO-DATE
+> Task :android_intent_plus:parseReleaseLocalResources UP-TO-DATE
+> Task :android_intent_plus:generateReleaseRFile UP-TO-DATE
+> Task :android_intent_plus:javaPreCompileRelease UP-TO-DATE
+> Task :android_intent_plus:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :android_intent_plus:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :battery_plus:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :battery_plus:generateReleaseResValues UP-TO-DATE
+> Task :battery_plus:generateReleaseResources UP-TO-DATE
+> Task :battery_plus:packageReleaseResources UP-TO-DATE
+> Task :battery_plus:processReleaseNavigationResources UP-TO-DATE
+> Task :battery_plus:parseReleaseLocalResources UP-TO-DATE
+> Task :battery_plus:generateReleaseRFile UP-TO-DATE
+> Task :battery_plus:compileReleaseKotlin UP-TO-DATE
+> Task :battery_plus:javaPreCompileRelease UP-TO-DATE
+> Task :battery_plus:compileReleaseJavaWithJavac NO-SOURCE
+> Task :battery_plus:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :battery_plus:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :flutter_local_notifications:generateReleaseResValues UP-TO-DATE
+> Task :flutter_local_notifications:generateReleaseResources UP-TO-DATE
+> Task :flutter_local_notifications:packageReleaseResources UP-TO-DATE
+> Task :flutter_local_notifications:processReleaseNavigationResources UP-TO-DATE
+> Task :flutter_local_notifications:parseReleaseLocalResources UP-TO-DATE
+> Task :flutter_local_notifications:generateReleaseRFile UP-TO-DATE
+> Task :flutter_local_notifications:javaPreCompileRelease UP-TO-DATE
+> Task :flutter_local_notifications:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :flutter_local_notifications:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :path_provider_android:generateReleaseResValues UP-TO-DATE
+> Task :path_provider_android:generateReleaseResources UP-TO-DATE
+> Task :path_provider_android:packageReleaseResources UP-TO-DATE
+> Task :path_provider_android:processReleaseNavigationResources UP-TO-DATE
+> Task :path_provider_android:parseReleaseLocalResources UP-TO-DATE
+> Task :path_provider_android:generateReleaseRFile UP-TO-DATE
+> Task :path_provider_android:javaPreCompileRelease UP-TO-DATE
+> Task :path_provider_android:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :path_provider_android:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :path_provider_android:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :shared_preferences_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared_preferences_android:generateReleaseResValues UP-TO-DATE
+> Task :shared_preferences_android:generateReleaseResources UP-TO-DATE
+> Task :shared_preferences_android:packageReleaseResources UP-TO-DATE
+> Task :shared_preferences_android:processReleaseNavigationResources UP-TO-DATE
+> Task :shared_preferences_android:parseReleaseLocalResources UP-TO-DATE
+> Task :shared_preferences_android:generateReleaseRFile UP-TO-DATE
+> Task :shared_preferences_android:compileReleaseKotlin UP-TO-DATE
+> Task :shared_preferences_android:javaPreCompileRelease UP-TO-DATE
+> Task :shared_preferences_android:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :shared_preferences_android:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :android_intent_plus:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :android_intent_plus:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :android_intent_plus:writeReleaseAarMetadata UP-TO-DATE
+> Task :battery_plus:writeReleaseAarMetadata UP-TO-DATE
+> Task :flutter_local_notifications:writeReleaseAarMetadata UP-TO-DATE
+> Task :path_provider_android:writeReleaseAarMetadata UP-TO-DATE
+> Task :shared_preferences_android:writeReleaseAarMetadata UP-TO-DATE
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:processReleaseNavigationResources UP-TO-DATE
+> Task :app:compileReleaseNavigationResources UP-TO-DATE
+> Task :app:cleanMergeReleaseAssets
+> Task :android_intent_plus:mergeReleaseShaders UP-TO-DATE
+> Task :android_intent_plus:compileReleaseShaders NO-SOURCE
+> Task :android_intent_plus:generateReleaseAssets UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseShaders UP-TO-DATE
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :battery_plus:mergeReleaseShaders UP-TO-DATE
+> Task :battery_plus:compileReleaseShaders NO-SOURCE
+> Task :battery_plus:generateReleaseAssets UP-TO-DATE
+> Task :battery_plus:mergeReleaseAssets UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseShaders UP-TO-DATE
+> Task :flutter_local_notifications:compileReleaseShaders NO-SOURCE
+> Task :flutter_local_notifications:generateReleaseAssets UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseAssets UP-TO-DATE
+> Task :path_provider_android:mergeReleaseShaders UP-TO-DATE
+> Task :path_provider_android:compileReleaseShaders NO-SOURCE
+> Task :path_provider_android:generateReleaseAssets UP-TO-DATE
+> Task :path_provider_android:mergeReleaseAssets UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseShaders UP-TO-DATE
+> Task :shared_preferences_android:compileReleaseShaders NO-SOURCE
+> Task :shared_preferences_android:generateReleaseAssets UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:copyFlutterAssetsRelease
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:mergeReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :android_intent_plus:extractDeepLinksRelease UP-TO-DATE
+> Task :android_intent_plus:processReleaseManifest UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :battery_plus:extractDeepLinksRelease UP-TO-DATE
+> Task :battery_plus:processReleaseManifest UP-TO-DATE
+> Task :flutter_local_notifications:extractDeepLinksRelease UP-TO-DATE
+> Task :flutter_local_notifications:processReleaseManifest UP-TO-DATE
+> Task :path_provider_android:extractDeepLinksRelease UP-TO-DATE
+> Task :path_provider_android:processReleaseManifest UP-TO-DATE
+> Task :shared_preferences_android:extractDeepLinksRelease UP-TO-DATE
+> Task :shared_preferences_android:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:outputReleaseAppLinkSettings UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :app:processReleaseResources UP-TO-DATE
+> Task :battery_plus:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :flutter_local_notifications:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :path_provider_android:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :shared_preferences_android:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :battery_plus:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :flutter_local_notifications:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :path_provider_android:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :shared_preferences_android:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :android_intent_plus:processReleaseJavaRes NO-SOURCE
+> Task :battery_plus:processReleaseJavaRes UP-TO-DATE
+> Task :flutter_local_notifications:processReleaseJavaRes NO-SOURCE
+> Task :path_provider_android:processReleaseJavaRes NO-SOURCE
+> Task :shared_preferences_android:processReleaseJavaRes UP-TO-DATE
+> Task :app:mergeReleaseStartupProfile UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseNativeLibs NO-SOURCE
+> Task :android_intent_plus:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :app:configureCMakeRelease[arm64-v8a]
+> Task :app:buildCMakeRelease[arm64-v8a]
+> Task :app:configureCMakeRelease[armeabi-v7a]
+> Task :app:buildCMakeRelease[armeabi-v7a]
+> Task :app:configureCMakeRelease[x86_64]
+> Task :app:buildCMakeRelease[x86_64]
+> Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :battery_plus:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :battery_plus:mergeReleaseNativeLibs NO-SOURCE
+> Task :battery_plus:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseNativeLibs NO-SOURCE
+> Task :flutter_local_notifications:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :path_provider_android:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :path_provider_android:mergeReleaseNativeLibs NO-SOURCE
+> Task :path_provider_android:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseNativeLibs NO-SOURCE
+> Task :shared_preferences_android:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :app:writeReleaseAppMetadata UP-TO-DATE
+> Task :app:collectReleaseDependencies
+> Task :app:configureReleaseDependencies
+> Task :android_intent_plus:extractProguardFiles UP-TO-DATE
+> Task :android_intent_plus:generateReleaseLintVitalModel UP-TO-DATE
+> Task :android_intent_plus:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :android_intent_plus:prepareLintJarForPublish UP-TO-DATE
+> Task :android_intent_plus:createFullJarRelease UP-TO-DATE
+> Task :android_intent_plus:generateReleaseLintModel UP-TO-DATE
+> Task :battery_plus:createFullJarRelease UP-TO-DATE
+> Task :battery_plus:extractProguardFiles UP-TO-DATE
+> Task :battery_plus:generateReleaseLintModel UP-TO-DATE
+> Task :battery_plus:prepareLintJarForPublish UP-TO-DATE
+> Task :flutter_local_notifications:createFullJarRelease UP-TO-DATE
+> Task :flutter_local_notifications:extractProguardFiles UP-TO-DATE
+> Task :flutter_local_notifications:generateReleaseLintModel UP-TO-DATE
+> Task :flutter_local_notifications:prepareLintJarForPublish UP-TO-DATE
+> Task :path_provider_android:createFullJarRelease UP-TO-DATE
+> Task :path_provider_android:extractProguardFiles UP-TO-DATE
+> Task :path_provider_android:generateReleaseLintModel UP-TO-DATE
+> Task :path_provider_android:prepareLintJarForPublish UP-TO-DATE
+> Task :shared_preferences_android:createFullJarRelease UP-TO-DATE
+> Task :shared_preferences_android:extractProguardFiles UP-TO-DATE
+> Task :shared_preferences_android:generateReleaseLintModel UP-TO-DATE
+> Task :shared_preferences_android:prepareLintJarForPublish UP-TO-DATE
+> Task :android_intent_plus:checkReleaseAarMetadata UP-TO-DATE
+> Task :android_intent_plus:stripReleaseDebugSymbols NO-SOURCE
+> Task :android_intent_plus:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :android_intent_plus:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :android_intent_plus:extractReleaseAnnotations UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :android_intent_plus:mergeReleaseJavaResource UP-TO-DATE
+> Task :android_intent_plus:syncReleaseLibJars UP-TO-DATE
+> Task :android_intent_plus:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :battery_plus:checkReleaseAarMetadata UP-TO-DATE
+> Task :battery_plus:stripReleaseDebugSymbols NO-SOURCE
+> Task :battery_plus:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :battery_plus:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :battery_plus:extractReleaseAnnotations UP-TO-DATE
+> Task :battery_plus:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :battery_plus:mergeReleaseJavaResource UP-TO-DATE
+> Task :battery_plus:syncReleaseLibJars UP-TO-DATE
+> Task :battery_plus:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :flutter_local_notifications:checkReleaseAarMetadata UP-TO-DATE
+> Task :flutter_local_notifications:stripReleaseDebugSymbols NO-SOURCE
+> Task :flutter_local_notifications:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :flutter_local_notifications:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :flutter_local_notifications:extractReleaseAnnotations UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :flutter_local_notifications:mergeReleaseJavaResource UP-TO-DATE
+> Task :flutter_local_notifications:syncReleaseLibJars UP-TO-DATE
+> Task :flutter_local_notifications:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :path_provider_android:checkReleaseAarMetadata UP-TO-DATE
+> Task :path_provider_android:stripReleaseDebugSymbols NO-SOURCE
+> Task :path_provider_android:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :path_provider_android:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :path_provider_android:extractReleaseAnnotations UP-TO-DATE
+> Task :path_provider_android:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :path_provider_android:mergeReleaseJavaResource UP-TO-DATE
+> Task :path_provider_android:syncReleaseLibJars UP-TO-DATE
+> Task :path_provider_android:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :shared_preferences_android:checkReleaseAarMetadata UP-TO-DATE
+> Task :shared_preferences_android:stripReleaseDebugSymbols NO-SOURCE
+> Task :shared_preferences_android:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :shared_preferences_android:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :shared_preferences_android:extractReleaseAnnotations UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :shared_preferences_android:mergeReleaseJavaResource UP-TO-DATE
+> Task :shared_preferences_android:syncReleaseLibJars UP-TO-DATE
+> Task :shared_preferences_android:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :android_intent_plus:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :battery_plus:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :battery_plus:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :flutter_local_notifications:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :flutter_local_notifications:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :path_provider_android:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :path_provider_android:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :shared_preferences_android:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :shared_preferences_android:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :battery_plus:generateReleaseLintVitalModel UP-TO-DATE
+> Task :flutter_local_notifications:generateReleaseLintVitalModel UP-TO-DATE
+> Task :path_provider_android:generateReleaseLintVitalModel UP-TO-DATE
+> Task :shared_preferences_android:generateReleaseLintVitalModel UP-TO-DATE
+> Task :app:parseReleaseIntegrityConfig UP-TO-DATE
+> Task :app:validateSigningRelease UP-TO-DATE
+> Task :app:compileReleaseKotlin
+> Task :app:mergeReleaseNativeLibs
+
+> Task :app:compileReleaseJavaWithJavac
+Java compiler version 21 has deprecated support for compiling with source/target version 8.
+Try one of the following options:
+    1. [Recommended] Use Java toolchain with a lower language version
+    2. Set a higher source/target version
+    3. Use a lower version of the JDK running the build (if you're not using Java toolchain)
+For more details on how to configure these settings, see https://developer.android.com/build/jdks.
+To suppress this warning, set android.javaCompile.suppressSourceTargetDeprecationWarning=true in gradle.properties.
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+
+> Task :app:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :app:processReleaseJavaRes
+> Task :app:stripReleaseDebugSymbols
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:extractReleaseNativeDebugMetadata
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseJavaResource
+
+> Task :app:minifyReleaseWithR8
+Supplied proguard configuration does not exist: C:\Users\pfaus\.gemini\antigravity\scratch\angry_battery\android\app\proguard-rules.pro
+
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:l8DexDesugarLibRelease
+> Task :app:buildReleasePreBundle
+> Task :app:compileReleaseArtProfile
+> Task :app:packageReleaseBundle
+> Task :app:signReleaseBundle
+> Task :app:produceReleaseBundleIdeListingFile
+> Task :app:createReleaseBundleListingFileRedirect UP-TO-DATE
+> Task :app:bundleRelease
+
+[Incubating] Problems report is available at: file:///C:/Users/pfaus/.gemini/antigravity/scratch/angry_battery/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 49s
+245 actionable tasks: 33 executed, 212 up-to-date

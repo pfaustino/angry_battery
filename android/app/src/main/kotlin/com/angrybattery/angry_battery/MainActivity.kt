@@ -50,10 +50,10 @@ class MainActivity : FlutterActivity() {
             } else if (call.method == "getScreenOnTime") {
                 if (!hasUsageStatsPermission()) {
                     result.success(0L) // Or error, but 0 is safe for now
-                } else {
-                    val sot = getScreenOnTime()
-                    result.success(sot)
                 }
+            } else if (call.method == "minimizeApp") {
+                moveTaskToBack(true)
+                result.success(null)
             } else {
                 result.notImplemented()
             }

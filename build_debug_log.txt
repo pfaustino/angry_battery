@@ -1,0 +1,32 @@
+Running Gradle task 'assembleDebug'...                          
+lib/main.dart:24:47: Error: The method 'VampireService' isn't defined for the type 'AngryBatteryApp'.
+ - 'AngryBatteryApp' is from 'package:angry_battery/main.dart' ('lib/main.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'VampireService'.
+        ChangeNotifierProvider(create: (_) => VampireService()..start()),
+                                              ^^^^^^^^^^^^^^
+lib/main.dart:24:40: Error: The argument type 'dynamic Function(BuildContext)' can't be assigned to the parameter type 'ChangeNotifier? Function(BuildContext)'.
+ - 'BuildContext' is from 'package:flutter/src/widgets/framework.dart' ('../flutter/packages/flutter/lib/src/widgets/framework.dart').
+ - 'ChangeNotifier' is from 'package:flutter/src/foundation/change_notifier.dart' ('../flutter/packages/flutter/lib/src/foundation/change_notifier.dart').
+        ChangeNotifierProvider(create: (_) => VampireService()..start()),
+                                       ^
+lib/widgets/vampire_hunter_card.dart:125:54: Error: Member not found: 'wbold'.
+                              fontWeight: FontWeight.wbold,
+                                                     ^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\Users\pfaus\.gemini\antigravity\scratch\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+Running Gradle task 'assembleDebug'...                              6.8s
+Gradle task assembleDebug failed with exit code 1

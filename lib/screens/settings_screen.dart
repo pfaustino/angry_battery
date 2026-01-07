@@ -3,6 +3,7 @@ import '../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import '../services/battery_service.dart';
 import '../services/vampire_service.dart';
+import 'trusted_apps_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -232,6 +233,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                 ],
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Trusted Apps Entry
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TrustedAppsManagementScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.border),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.verified_user, color: AppTheme.primary, size: 24),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Trusted Apps',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Manage excluded apps',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Icon(Icons.arrow_forward_ios, color: AppTheme.textMuted, size: 16),
+                  ],
+                ),
               ),
             ),
             

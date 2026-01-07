@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/vampire_service.dart';
 import '../theme/app_theme.dart';
+import '../screens/vampire_hunter_detail_screen.dart';
 
 class VampireHunterCard extends StatelessWidget {
   const VampireHunterCard({super.key});
@@ -34,58 +35,10 @@ class VampireHunterCard extends StatelessWidget {
               onTap: () {
                 if (!hasCatch) return;
                 
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: AppTheme.surface,
-                    title: Row(
-                      children: [
-                        const Icon(Icons.nightlight_round, color: AppTheme.warning),
-                        const SizedBox(width: 8),
-                        const Text('Vampire Detected! 🧛'),
-                      ],
-                    ),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'You lost ${alert.drainAmount}% battery while the screen was off (${alert.duration.inMinutes} mins).',
-                          style: const TextStyle(color: Colors.white70),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Suspects:',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accent),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          constraints: const BoxConstraints(maxHeight: 200),
-                          child: alert.suspects.isEmpty 
-                              ? const Text('Unknown causes.', style: TextStyle(color: Colors.white38))
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: alert.suspects.length,
-                                  itemBuilder: (context, index) {
-                                    final app = alert.suspects[index];
-                                    return ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      dense: true,
-                                      leading: const Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 20),
-                                      title: Text(app['appName'] ?? 'Unknown', style: const TextStyle(color: Colors.white)),
-                                      subtitle: Text('${app['usage']}m active', style: const TextStyle(color: Colors.white38)),
-                                    );
-                                  },
-                                ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Dismiss'),
-                      ),
-                    ],
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VampireHunterDetailScreen(alert: alert!),
                   ),
                 );
               },

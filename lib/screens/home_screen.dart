@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../services/battery_service.dart';
 import '../theme/app_theme.dart';
@@ -88,11 +89,48 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showExitDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.surface,
+        title: const Text('Wait! The Vampires are watching...'),
+        content: const Text(
+          "Minimizes the app. The service stays alive.",
+          style: TextStyle(color: Colors.white70),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              SystemNavigator.pop();
+            },
+            child: const Text('Shutdown', style: TextStyle(color: Colors.grey)),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: AppTheme.accent),
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<BatteryService>().minimizeApp();
+            },
+            child: const Text('Keep Hunting'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<BatteryService>(
       builder: (context, battery, child) {
-        return Scaffold(
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (didPop) return;
+            _showExitDialog(context);
+          },
+          child: Scaffold(
           backgroundColor: AppTheme.background,
           body: SafeArea(
             child: SingleChildScrollView(
@@ -319,6 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+          ),
           ),
         );
       },

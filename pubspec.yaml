@@ -2,7 +2,7 @@ name: angry_battery
 description: "Monitor and manage your phone's battery usage with style."
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.10.4

@@ -1,0 +1,5 @@
+# Build Configuration
+
+## Android APK Size
+*   **Default Behavior**: Keep APK size small (~40MB).
+*   **Debug Symbols**: Do NOT enable `debugSymbolLevel = 'FULL'` in `android/app/build.gradle.kts` unless explicitly requested by the user for debugging specific native crashes. This setting bloats the APK (~400MB) and should not be left on by default.

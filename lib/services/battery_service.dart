@@ -52,17 +52,57 @@ class BatteryService extends ChangeNotifier {
   }
   
   String get estimatedTime {
-    // Rough estimation based on battery level
+    double minutesPerPercent;
+    
     if (isCharging) {
-      final remaining = 100 - _batteryLevel;
-      final minutes = (remaining * 1.5).round(); // ~1.5 min per percent
-      if (minutes < 60) return '$minutes min to full';
-      return '${(minutes / 60).round()} hr to full';
+      minutesPerPercent = 1.5; // Default: ~1.5 min per percent for charging
     } else {
-      final minutes = (_batteryLevel * 6).round(); // ~6 min per percent
-      if (minutes < 60) return '$minutes min remaining';
-      final hours = minutes / 60;
-      return '${hours.toStringAsFixed(1)} hr remaining';
+      minutesPerPercent = 6.0; // Default: ~6 min per percent for discharging (~10h total)
+    }
+
+    // Attempt to refine estimation based on recent history
+    if (_history.length >= 2) {
+      // Find the start of the current contiguous state sequence (charging or discharging)
+      int startIndex = _history.length - 1;
+      while (startIndex > 0 && _history[startIndex - 1].isCharging == isCharging) {
+        startIndex--;
+      }
+      
+      // We need at least 2 records in the current state to compare
+      if (startIndex < _history.length - 1) {
+        final startRecord = _history[startIndex];
+        final endRecord = _history.last;
+        
+        final int levelDiff = (startRecord.level - endRecord.level).abs();
+        final int timeDiff = endRecord.timestamp.difference(startRecord.timestamp).inMinutes;
+        
+        // Ensure we have observed an actual change in battery level and sufficient time passed (e.g. > 2 mins)
+        // to avoid noise (fluctuations without level change).
+        if (levelDiff > 0 && timeDiff >= 2) {
+           minutesPerPercent = timeDiff / levelDiff;
+        }
+      }
+    }
+
+    int totalMinutes;
+    if (isCharging) {
+      final remainingLevel = 100 - _batteryLevel;
+      totalMinutes = (remainingLevel * minutesPerPercent).round();
+      
+      if (totalMinutes < 60) return '$totalMinutes min to full';
+      final hours = totalMinutes ~/ 60;
+      final mins = totalMinutes % 60;
+      if (mins == 0) return '$hours hr to full';
+      return '$hours hr $mins min to full';
+    } else {
+      // Discharging
+      totalMinutes = (_batteryLevel * minutesPerPercent).round();
+      
+      if (totalMinutes < 60) return '$totalMinutes min remaining';
+      final hours = totalMinutes ~/ 60;
+      final mins = totalMinutes % 60;
+      if (mins == 0) return '$hours hr remaining';
+      return '$hours hr $mins min remaining';
     }
   }
   
